@@ -1,0 +1,8 @@
+[package]
+name = "apiece"
+version = "0.1.0"
+authors = ["Paweł Ledwoń <me@ludvik.pl>"]
+
+[dependencies]
+docopt = "*"
+rustc-serialize = "*"
