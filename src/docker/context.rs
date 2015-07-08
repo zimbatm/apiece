@@ -93,4 +93,8 @@ impl Context {
   pub fn container_name(&self) -> String {
     self.docker_image()
   }
+
+  pub fn docker_options(&self) -> &Vec<String> {
+    &self.docker_options
+  }
 }

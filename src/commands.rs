@@ -16,12 +16,16 @@ pub fn in_host_context<S: AsRef<OsStr>>(context: &HostContext, program: S, args:
 
 pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str, temp: bool, program: S, args: &[S]) -> Command {
   let mut command = in_host_context(context, "docker", &vec!["run"]);
+
+  for opt in context.docker_options() {
+    command.arg(opt);
+  }
+
   command
     .arg("-w")
     .arg(context.container_dir())
     .arg("-t")
     .arg("-i");
-
   if temp {
     command.arg("--rm");
   }
@@ -38,6 +42,7 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
     }
     None => {}
   }
+
   if context.mount_workdir() {
     let host_dir = context.host_dir().to_os_string().into_string().unwrap();
     let container_dir = context.container_dir().to_os_string().into_string().unwrap();
@@ -45,6 +50,7 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
       .arg("-v")
       .arg(format!("{}:{}", host_dir, container_dir));
   }
+
   match context.ssh_auth_sock() {
     Some(sock) => {
       let host_sock = sock.clone().into_string().unwrap();
