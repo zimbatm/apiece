@@ -10,7 +10,6 @@ Usage:
   apiece clean (local|dev) [-d DIR --dockeropt=OPT...]
   apiece info name [-d DIR]
   apiece info base [-d DIR]
-  apiece bases [<pattern>]
 
 Options:
   -h --help                 Show this screen.
@@ -33,12 +32,9 @@ pub struct Args {
   pub cmd_name: bool,
   pub cmd_base: bool,
 
-  pub cmd_bases: bool,
-
   pub arg_base: String,
   pub arg_name: String,
   pub arg_command: Vec<String>,
-  pub arg_pattern: String,
 
   pub flag_directory: Option<String>,
   pub flag_port: Option<u16>,
