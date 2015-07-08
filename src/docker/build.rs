@@ -7,7 +7,7 @@ use rand;
 
 use command_ext::*;
 use commands;
-use context::{ContainerContext, HostContext};
+use context::HostContext;
 
 use docker::Context;
 
@@ -47,38 +47,9 @@ fn remove_stage1(context: &Context, tag_stage1: String) -> Result<()> {
 }
 
 fn build_stage2(context: &Context, tag_stage1: &str) -> Result<String> {
-  let tag_stage2 = format!("{}__stage2", context.docker_image());
-  let mut command = commands::in_host_context(context, "docker", &vec!["run"]);
-  command.arg("-w").arg(context.container_dir());
-
-  for (k, v) in context.container_env() {
-    command.arg("-e").arg(format!("{}={}", k, v));
-  }
-
-  if context.mount_workdir() {
-    let host_dir = context.host_dir().to_os_string().into_string().unwrap();
-    let container_dir = context.container_dir().to_os_string().into_string().unwrap();
-    command
-      .arg("-v")
-      .arg(format!("{}:{}", host_dir, container_dir));
-  }
-  match context.ssh_auth_sock() {
-    Some(sock) => {
-      let host_sock = sock.clone().into_string().unwrap();
-      let guest_sock = "/apiece.io/.ssh_auth_sock";
-      command
-        .arg("-v").arg(format!("{}:{}", host_sock, guest_sock))
-        .arg("-e").arg(format!("{}={}", "SSH_AUTH_SOCK", guest_sock));
-    }
-    None => {}
-  }
-
-  command
-    .arg("--name").arg(&tag_stage2)
-    .arg(tag_stage1)
-    .arg(context.build_script())
-    .exec()
-    .map(|_| { tag_stage2 })
+  commands::in_docker_context(
+    context, tag_stage1, false, context.build_script(), &vec![]
+  ).exec().map(|_| { context.container_name() })
 }
 
 fn commit_stage2(context: &Context, tag_stage2: &str) -> Result<()> {

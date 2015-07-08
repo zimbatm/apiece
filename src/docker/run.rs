@@ -2,54 +2,10 @@ use std::io::Error;
 
 use commands;
 use command_ext::*;
-use context::{HostContext, ContainerContext};
 use docker::Context;
 
 pub fn run(context: &Context) -> Result<(), Error> {
-  let mut command = commands::in_host_context(context, "docker", &vec!["run"]);
-  command
-    .arg("-w")
-    .arg(context.container_dir())
-    .arg("--rm")
-    .arg("-t")
-    .arg("-i");
-
-  for (k, v) in context.container_env() {
-    command.arg("-e").arg(format!("{}={}", k, v));
-  }
-
-  match context.external_port() {
-    Some(port) => {
-      command
-        .arg("-p")
-        .arg(format!("{}:{}", port, context.container_bind_port()));
-    }
-    None => {}
-  }
-  if context.mount_workdir() {
-    let host_dir = context.host_dir().to_os_string().into_string().unwrap();
-    let container_dir = context.container_dir().to_os_string().into_string().unwrap();
-    command
-      .arg("-v")
-      .arg(format!("{}:{}", host_dir, container_dir));
-  }
-  match context.ssh_auth_sock() {
-    Some(sock) => {
-      let host_sock = sock.clone().into_string().unwrap();
-      let guest_sock = "/apiece.io/.ssh_auth_sock";
-      command
-        .arg("-v")
-        .arg(format!("{}:{}", host_sock, guest_sock))
-        .arg("-e")
-        .arg(format!("{}={}", "SSH_AUTH_SOCK", guest_sock));
-    }
-    None => {}
-  }
-
-  command
-    .arg("--name")
-    .arg(context.container_name())
-    .arg(context.docker_image())
-    .arg(context.run_script())
-    .exec()
+  commands::in_docker_context(
+    context, &context.docker_image(), true, context.run_script(), &vec![]
+  ).exec()
 }
