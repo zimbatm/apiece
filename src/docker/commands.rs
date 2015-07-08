@@ -17,3 +17,9 @@ pub fn exec(context: &Context, command: &[String]) -> Result<(), Error> {
     context, &context.docker_image(), true, command
   ).exec()
 }
+
+pub fn clean(context: &Context) -> Result<(), Error> {
+  commands::in_docker_context(
+    context, &context.docker_image(), true, &vec![context.clean_script()]
+  ).exec()
+}

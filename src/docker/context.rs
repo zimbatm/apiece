@@ -67,6 +67,10 @@ impl Context {
     self.container_script(&self.app_env.run_script())
   }
 
+  pub fn clean_script(&self) -> OsString {
+    self.container_script(&self.app_env.clean_script())
+  }
+
   fn container_script(&self, script: &str) -> OsString {
     let mut path = PathBuf::from(self.container_dir());
     path.push(script);

@@ -47,6 +47,10 @@ impl AppEnvironment {
     self.script("run")
   }
 
+  pub fn clean_script(&self) -> String {
+    self.script("clean")
+  }
+
   fn script(&self, name: &str) -> String {
     format!("apiece.io/{}/{}", name, self.name)
   }

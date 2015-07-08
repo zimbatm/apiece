@@ -42,6 +42,8 @@ fn main() {
         local::run(&context).unwrap();
       } else if args.cmd_exec {
         local::exec(&context, &args.arg_command).unwrap();
+      } else if args.cmd_clean {
+        local::clean(&context).unwrap();
       }
     } else {
       let context = docker::Context {
@@ -65,6 +67,8 @@ fn main() {
         docker::run(&context).unwrap();
       } else if args.cmd_exec {
         docker::exec(&context, &args.arg_command).unwrap();
+      } else if args.cmd_clean {
+        docker::clean(&context).unwrap();
       }
     };
   }
