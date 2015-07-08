@@ -38,6 +38,8 @@ fn main() {
       };
       if args.cmd_build {
         local::build(&context).unwrap();
+      } else if args.cmd_run {
+        local::run(&context).unwrap();
       }
     } else {
       let context = docker::Context {
@@ -53,9 +55,12 @@ fn main() {
           None
         },
         docker_options: args.flag_dockeropt,
+        mount_workdir: args.cmd_dev,
       };
       if args.cmd_build {
         docker::build(&context).unwrap();
+      } else if args.cmd_run {
+        docker::run(&context).unwrap();
       }
     };
   }

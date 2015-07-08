@@ -28,6 +28,14 @@ impl Context {
     self.host_script(&self.app_env.build_script())
   }
 
+  pub fn exec_script(&self) -> OsString {
+    self.host_script(&self.app_env.exec_script())
+  }
+
+  pub fn run_script(&self) -> OsString {
+    self.host_script(&self.app_env.run_script())
+  }
+
   fn host_script(&self, script: &str) -> OsString {
     let mut path = PathBuf::from(self.host_dir());
     path.push(script);

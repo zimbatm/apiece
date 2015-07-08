@@ -26,6 +26,10 @@ impl HostContext for Context {
 }
 
 impl ContainerContext for Context {
+  fn container_bind_port(&self) -> u16 {
+    3000
+  }
+
   fn mount_workdir(&self) -> bool {
     self.mount_workdir
   }
@@ -34,7 +38,7 @@ impl ContainerContext for Context {
     let mut env_vars = self.app_env.env_vars();
     env_vars.insert(
       "APIECEIO_PORT".to_string(),
-      3000.to_string());
+      self.container_bind_port().to_string());
     env_vars.insert(
       "APIECEIO_DATA_DIR".to_string(),
       self.container_data_dir().into_string().unwrap());
@@ -47,12 +51,20 @@ impl Context {
     self.app_env.app_name()
   }
 
+  pub fn external_port(&self) -> Option<u16> {
+    self.external_port
+  }
+
   pub fn ssh_auth_sock(&self) -> Option<&OsString> {
     self.ssh_auth_sock.as_ref()
   }
 
   pub fn build_script(&self) -> OsString {
     self.container_script(&self.app_env.build_script())
+  }
+
+  pub fn run_script(&self) -> OsString {
+    self.container_script(&self.app_env.run_script())
   }
 
   fn container_script(&self, script: &str) -> OsString {

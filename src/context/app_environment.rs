@@ -39,6 +39,14 @@ impl AppEnvironment {
     self.script("build")
   }
 
+  pub fn exec_script(&self) -> String {
+    self.script("exec")
+  }
+
+  pub fn run_script(&self) -> String {
+    self.script("run")
+  }
+
   fn script(&self, name: &str) -> String {
     format!("apiece.io/{}/{}", name, self.name)
   }

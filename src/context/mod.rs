@@ -40,5 +40,6 @@ pub trait ContainerContext : AppContext {
   }
 
   fn container_env(&self) -> EnvVars;
+  fn container_bind_port(&self) -> u16;
   fn mount_workdir(&self) -> bool;
 }
