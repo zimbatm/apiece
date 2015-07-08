@@ -14,7 +14,7 @@ pub fn in_host_context<S: AsRef<OsStr>>(context: &HostContext, program: S, args:
   command
 }
 
-pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str, temp: bool, program: S, args: &[S]) -> Command {
+pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str, temp: bool, program: &[S]) -> Command {
   let mut command = in_host_context(context, "docker", &vec!["run"]);
 
   for opt in context.docker_options() {
@@ -68,8 +68,7 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
     .arg("--name")
     .arg(context.container_name())
     .arg(image)
-    .arg(program)
-    .args(args);
+    .args(program);
 
   command
 }

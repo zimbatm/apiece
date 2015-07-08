@@ -6,6 +6,6 @@ use docker::Context;
 
 pub fn run(context: &Context) -> Result<(), Error> {
   commands::in_docker_context(
-    context, &context.docker_image(), true, context.run_script(), &vec![]
+    context, &context.docker_image(), true, &vec![context.run_script()]
   ).exec()
 }

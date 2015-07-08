@@ -48,7 +48,7 @@ fn remove_stage1(context: &Context, tag_stage1: String) -> Result<()> {
 
 fn build_stage2(context: &Context, tag_stage1: &str) -> Result<String> {
   commands::in_docker_context(
-    context, tag_stage1, false, context.build_script(), &vec![]
+    context, tag_stage1, false, &vec![context.build_script()]
   ).exec().map(|_| { context.container_name() })
 }
 
