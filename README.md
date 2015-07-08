@@ -2,6 +2,32 @@
 
 Container-oriented application development workflow.
 
+## Basic usage
+
+Start by creating an application using `apiece new` specifying the base image
+and the name of your app.
+
+```bash
+apiece new https://github.com/pl/apiece-base-express-4 apiece-hello-world
+cd apiece-hello-world
+```
+
+Build the application using Docker:
+
+```bash
+apiece build
+```
+
+Start the server and expose the application port:
+```bash
+apiece run -p 1234
+```
+
+Check that the application is running:
+```bash
+curl http://localhost:1234
+```
+
 ## Base Images
 
 Base images are implemented as git repositories. Currently there is no registry,
