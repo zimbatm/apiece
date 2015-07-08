@@ -1,7 +1,6 @@
 mod build;
 mod context;
-mod run;
+mod commands;
 
-pub use self::build::build;
 pub use self::context::Context;
-pub use self::run::run;
+pub use self::commands::{build, run, exec};

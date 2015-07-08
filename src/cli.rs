@@ -4,14 +4,14 @@ pub static USAGE: &'static str = "apiece
 
 Usage:
   apiece new [-d DIR] <base> <name>
-  apiece build [dev] [-d DIR]
   apiece build local [-d DIR]
-  apiece run [dev] [-d DIR -p <port> --forward-ssh-agent --dockeropt=OPT...]
+  apiece build [dev] [-d DIR]
   apiece run local [-d DIR -p <port>]
-  apiece exec [dev] [-d DIR --forward-ssh-agent --dockeropt=OPT...] [--] <command>...
+  apiece run [dev] [-d DIR -p <port> --forward-ssh-agent --dockeropt=OPT...]
   apiece exec local [-d DIR] [--] <command>...
-  apiece clean dev [-d DIR --dockeropt=OPT...]
+  apiece exec [dev] [-d DIR --forward-ssh-agent --dockeropt=OPT...] [--] <command>...
   apiece clean local [-d DIR]
+  apiece clean dev [-d DIR --dockeropt=OPT...]
   apiece info name [-d DIR]
   apiece info base [-d DIR]
 

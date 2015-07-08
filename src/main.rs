@@ -40,6 +40,8 @@ fn main() {
         local::build(&context).unwrap();
       } else if args.cmd_run {
         local::run(&context).unwrap();
+      } else if args.cmd_exec {
+        local::exec(&context, &args.arg_command).unwrap();
       }
     } else {
       let context = docker::Context {
@@ -61,6 +63,8 @@ fn main() {
         docker::build(&context).unwrap();
       } else if args.cmd_run {
         docker::run(&context).unwrap();
+      } else if args.cmd_exec {
+        docker::exec(&context, &args.arg_command).unwrap();
       }
     };
   }
