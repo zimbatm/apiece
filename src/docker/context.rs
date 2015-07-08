@@ -47,10 +47,6 @@ impl ContainerContext for Context {
 }
 
 impl Context {
-  pub fn app_name(&self) -> &str {
-    self.app_env.app_name()
-  }
-
   pub fn external_port(&self) -> Option<u16> {
     self.external_port
   }

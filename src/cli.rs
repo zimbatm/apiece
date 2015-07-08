@@ -13,7 +13,6 @@ Usage:
   apiece clean local [-d DIR]
   apiece clean dev [-d DIR --dockeropt=OPT...]
   apiece info name [-d DIR]
-  apiece info base [-d DIR]
 
 Options:
   -h --help                 Show this screen.
@@ -34,7 +33,6 @@ pub struct Args {
 
   pub cmd_info: bool,
   pub cmd_name: bool,
-  pub cmd_base: bool,
 
   pub arg_base: String,
   pub arg_name: String,

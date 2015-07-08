@@ -11,6 +11,10 @@ pub use self::app::App;
 pub use self::app_environment::AppEnvironment;
 
 pub trait AppContext {
+  fn app_name(&self) -> &str {
+    self.app_env().app_name()
+  }
+
   fn app_env(&self) -> &AppEnvironment;
 }
 

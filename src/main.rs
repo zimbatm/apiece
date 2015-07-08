@@ -21,6 +21,8 @@ use std::fs::File;
 use std::io::{Read, Error};
 use std::path::PathBuf;
 
+use context::AppContext;
+
 fn main() {
   let args = cli::get_args();
 
@@ -31,7 +33,7 @@ fn main() {
     let app_name = read_app_name(&workdir).unwrap();
     let app = context::App::new(app_name, workdir, HashMap::new());
 
-    if args.cmd_local {
+    if args.cmd_local || args.cmd_info {
       let context = local::Context {
         app_env: context::AppEnvironment::new("local", app),
         bind_port: args.flag_port.unwrap_or(3000),
@@ -44,6 +46,10 @@ fn main() {
         local::exec(&context, &args.arg_command).unwrap();
       } else if args.cmd_clean {
         local::clean(&context).unwrap();
+      } else if args.cmd_info {
+        if args.cmd_name {
+          println!("{}", context.app_name());
+        }
       }
     } else {
       let context = docker::Context {
