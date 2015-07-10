@@ -88,6 +88,22 @@ Production applications and tests should be run in a clean environment to make
 execution repeatable. Although using clean environments is advised, it is not
 possible to support it along live updates.
 
+## Application Layout
+
+When bootstrapping an application, apiece creates an `apiece.io` directory
+in the root of the project. This folder contains:
+
+* build hooks (production, development, local)
+* exec hooks (production, development, local)
+* run hooks (production, development, local)
+* clean hooks (development, local)
+* Docker files (production, development)
+* data directories (production, development, local)
+* app-name file containing the application name
+
+Command hooks and Docker files can be modified whenever needed, just make sure
+they respect semantics of their environments.
+
 ## Commands
 
 All commands and available options can be found by running `apiece -h`.
