@@ -59,6 +59,10 @@ impl Context {
     self.container_script(&self.app_env.build_script())
   }
 
+  pub fn exec_script(&self) -> OsString {
+    self.container_script(&self.app_env.exec_script())
+  }
+
   pub fn run_script(&self) -> OsString {
     self.container_script(&self.app_env.run_script())
   }

@@ -68,6 +68,7 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
     .arg("--name")
     .arg(context.container_name())
     .arg(image)
+    .arg(context.exec_script())
     .args(program);
 
   command
