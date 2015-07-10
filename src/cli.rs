@@ -1,11 +1,12 @@
 use docopt::Docopt;
 
+// Remember to update the README after changing the interface
 pub static USAGE: &'static str = "apiece
 
 Usage:
   apiece new [-d DIR] <base> <name>
   apiece build local [-d DIR]
-  apiece build [dev] [-d DIR]
+  apiece build [dev] [-d DIR --forward-ssh-agent]
   apiece run local [-d DIR -p <port>]
   apiece run [dev] [-d DIR -p <port> --forward-ssh-agent --dockeropt=OPT...]
   apiece exec local [-d DIR] [--] <command>...
