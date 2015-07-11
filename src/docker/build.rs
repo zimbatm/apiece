@@ -71,6 +71,7 @@ fn find_unique_filename(prefix: &OsStr) -> OsString {
     path.push("/Dockerfile.temp.");
     path.push(rand::random::<u16>().to_string());
 
+    // TODO use std::path::Path::exists when it's declared as stable
     match fs::metadata(&path) {
       Err(_) => return path,
       Ok(_) => continue

@@ -22,6 +22,11 @@ pub fn run(args: Args) {
   println!("Importing base image...");
   import_base(&workdir, &base).unwrap();
   remove_base_git_dir(&workdir).unwrap();
+
+  if !validate_app_name(&workdir, &app_name).unwrap() {
+    panic!("Invalid app name!");
+  }
+
   println!("Making data directories...");
   make_data_dirs(&workdir).unwrap();
   println!("Bootstrapping the app...");
@@ -48,6 +53,7 @@ fn get_workdir(app_name: &str, directory: &Option<String>) -> Result<String, Err
 }
 
 fn create_workdir(workdir: &str) -> Result<(), &str> {
+  // TODO use std::path::Path::exists when it's declared as stable
   match fs::metadata(workdir) {
     Ok(_) => {
       Err("Workdir already exists")
@@ -87,6 +93,26 @@ fn remove_base_git_dir(workdir: &str) -> Result<(), Error> {
   base_git_dir.push(".git");
 
   fs::remove_dir_all(base_git_dir)
+}
+
+fn validate_app_name(workdir: &str, app_name: &str) -> Result<bool, Error> {
+  let mut validate_script_path = PathBuf::from(&workdir);
+  validate_script_path.push("apiece.io");
+  validate_script_path.push("bootstrap");
+  validate_script_path.push("validate");
+
+  // TODO use std::path::Path::exists when it's declared as stable
+  match fs::metadata(&validate_script_path) {
+    Ok(_) => {
+      Command::new(&validate_script_path)
+        .arg(app_name)
+        .status()
+        .map(|status| { status.success() })
+    }
+    Err(_) => {
+      Ok(true)
+    }
+  }
 }
 
 fn make_data_dirs(workdir: &str) -> Result<(), Error> {
