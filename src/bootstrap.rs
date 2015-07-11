@@ -21,6 +21,7 @@ pub fn run(args: Args) {
   create_workdir(&workdir).unwrap();
   println!("Importing base image...");
   import_base(&workdir, &base).unwrap();
+  remove_base_git_dir(&workdir).unwrap();
   println!("Making data directories...");
   make_data_dirs(&workdir).unwrap();
   println!("Bootstrapping the app...");
@@ -78,6 +79,14 @@ fn import_base(workdir: &str, base: &GitBase) -> Result<ExitStatus, Error> {
   command.arg(apiece_path);
 
   command.status()
+}
+
+fn remove_base_git_dir(workdir: &str) -> Result<(), Error> {
+  let mut base_git_dir = PathBuf::from(workdir);
+  base_git_dir.push("apiece.io");
+  base_git_dir.push(".git");
+
+  fs::remove_dir_all(base_git_dir)
 }
 
 fn make_data_dirs(workdir: &str) -> Result<(), Error> {
