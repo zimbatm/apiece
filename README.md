@@ -129,8 +129,8 @@ Builds the application in given environment.
 ### run
 
 ```
-run local [-d DIR -p <port>]
-run [dev] [-d DIR -p <port> --forward-ssh-agent --dockeropt=OPT...]
+run local [-d DIR -p <port>] [--] <args>...
+run [dev] [-d DIR -p <port> --forward-ssh-agent --dockeropt=OPT...] [--] <args>...
 ```
 
 Runs the application in given environment using the last build. Supports

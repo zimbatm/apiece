@@ -7,9 +7,13 @@ use local::Context;
 
 pub use super::build::build;
 
-pub fn run(context: &Context) -> Result<(), Error> {
+pub fn run(context: &Context, args: Vec<String>) -> Result<(), Error> {
+  let mut command = vec![context.run_script()];
+  for arg in args {
+    command.push(OsString::from(arg));
+  }
   commands::in_host_context(
-    context, context.exec_script(), &vec![context.run_script()]
+    context, context.exec_script(), &command
   ).exec()
 }
 

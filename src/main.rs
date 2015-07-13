@@ -41,7 +41,7 @@ fn main() {
       if args.cmd_build {
         local::build(&context).unwrap();
       } else if args.cmd_run {
-        local::run(&context).unwrap();
+        local::run(&context, args.arg_args).unwrap();
       } else if args.cmd_exec {
         local::exec(&context, &args.arg_command).unwrap();
       } else if args.cmd_clean {
@@ -70,7 +70,7 @@ fn main() {
       if args.cmd_build {
         docker::build(&context).unwrap();
       } else if args.cmd_run {
-        docker::run(&context).unwrap();
+        docker::run(&context, args.arg_args).unwrap();
       } else if args.cmd_exec {
         docker::exec(&context, &args.arg_command).unwrap();
       } else if args.cmd_clean {

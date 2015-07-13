@@ -7,8 +7,8 @@ Usage:
   apiece new [-d DIR] <base> <name>
   apiece build local [-d DIR]
   apiece build [dev] [-d DIR --forward-ssh-agent]
-  apiece run local [-d DIR -p <port>]
-  apiece run [dev] [-d DIR -p <port> --forward-ssh-agent --dockeropt=OPT...]
+  apiece run local [-d DIR -p <port>] [--] <args>...
+  apiece run [dev] [-d DIR -p <port> --forward-ssh-agent --dockeropt=OPT...] [--] <args>...
   apiece exec local [-d DIR] [--] <command>...
   apiece exec [dev] [-d DIR --forward-ssh-agent --dockeropt=OPT...] [--] <command>...
   apiece clean local [-d DIR]
@@ -37,6 +37,7 @@ pub struct Args {
 
   pub arg_base: String,
   pub arg_name: String,
+  pub arg_args: Vec<String>,
   pub arg_command: Vec<String>,
 
   pub flag_directory: Option<String>,
