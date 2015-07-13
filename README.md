@@ -1,12 +1,10 @@
 # apiece
 
-Container-oriented application development workflow.
+Bootstrap, develop, build and run applications in Docker or locally.
 
-## Why?
-
-* to make running applications in Docker easier
-* to simplify onboarding
-* to help with prototyping
+Uses base images for bootstrapping applications, which include scripts for
+building and running the created application in consistent, isolated
+[environments](#environments).
 
 ## Requirements
 
