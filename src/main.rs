@@ -59,6 +59,7 @@ fn main() {
           context::AppEnvironment::new("production", app)
         },
         external_port: args.flag_port,
+        instance_name: args.flag_instance,
         ssh_auth_sock: if args.flag_forward_ssh_agent {
           env::var("SSH_AUTH_SOCK").ok().map(|s| { OsString::from(s) })
         } else {

@@ -8,6 +8,7 @@ use context::*;
 pub struct Context {
   pub app_env: AppEnvironment,
   pub external_port: Option<u16>,
+  pub instance_name: Option<String>,
   pub ssh_auth_sock: Option<OsString>,
   pub docker_options: Vec<String>,
   pub mount_workdir: bool,
@@ -96,6 +97,10 @@ impl Context {
 
   pub fn container_name(&self) -> String {
     self.docker_image()
+  }
+
+  pub fn instance_name(&self) -> Option<&String> {
+    self.instance_name.as_ref()
   }
 
   pub fn docker_options(&self) -> &Vec<String> {
