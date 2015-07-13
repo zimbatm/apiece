@@ -38,16 +38,13 @@ pub fn run(args: Args) {
 }
 
 fn get_workdir(app_name: &str, directory: &Option<String>) -> Result<String, Error> {
-  match directory {
-    &Some(ref d) =>
-      Ok(PathBuf::from(d)),
-    &None => {
-      env::current_dir().map(|mut path| {
-        path.push(app_name);
-        path
-      })
+  env::current_dir().map(|mut path| {
+    match directory {
+      &Some(ref d) => path.push(d),
+      &None => path.push(app_name)
     }
-  }.map(|path| {
+    path
+  }).map(|path| {
     path.into_os_string().into_string().unwrap()
   })
 }
