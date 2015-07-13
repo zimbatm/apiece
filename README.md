@@ -44,7 +44,7 @@ curl http://localhost:1234
 
 ## Environments
 
-There are 3 environments supported by `apiece`: `production` (default),
+There are 3 environments supported by apiece: `production` (default),
 `development` and `local`. Each of the environments supports separate
 `build`/`run`/`exec`/`clean` scripts and mounted data directories.
 
@@ -180,7 +180,7 @@ Please send a pull request to include your base on this list.
 
 ## Build Instructions
 
-In order to build `apiece`, Rust 1.1.0+ and Cargo must be installed. Running
+In order to build apiece, Rust 1.1.0+ and Cargo must be installed. Running
 
 ```
 cargo build --release
