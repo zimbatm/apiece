@@ -176,6 +176,7 @@ so when creating a new application the base needs to be specified as a git URL.
 Please send a pull request to include your base on this list.
 
 * https://github.com/pl/apiece-base-express-4
+* https://github.com/pl/apiece-base-go-http
 * https://github.com/pl/apiece-base-rails-4
 
 ## Build Instructions
