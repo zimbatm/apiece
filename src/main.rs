@@ -52,13 +52,28 @@ fn main() {
         }
       }
     } else {
+      let bind = match args.flag_net {
+        Some(net_type) => {
+          if net_type == "host" {
+            match args.flag_port {
+              Some(port) => docker::Bind::Host(port),
+              None => panic!("Host network requires a port number"),
+            }
+          } else {
+            panic!("Unknown network type: {}", net_type)
+          }
+        },
+        None => {
+          docker::Bind::Bridge(args.flag_port)
+        }
+      };
+
       let context = docker::Context {
         app_env: if args.cmd_dev {
           context::AppEnvironment::new("development", app)
         } else {
           context::AppEnvironment::new("production", app)
         },
-        external_port: args.flag_port,
         instance_name: args.flag_instance,
         ssh_auth_sock: if args.flag_forward_ssh_agent {
           env::var("SSH_AUTH_SOCK").ok().map(|s| { OsString::from(s) })
@@ -67,6 +82,7 @@ fn main() {
         },
         docker_options: args.flag_dockeropt,
         mount_workdir: args.cmd_dev,
+        bind: bind,
       };
       if args.cmd_build {
         docker::build(&context).unwrap();

@@ -8,7 +8,7 @@ Usage:
   apiece build local [-d DIR]
   apiece build [dev] [-d DIR --forward-ssh-agent]
   apiece run local [-d DIR -p PORT] [--] [<args>...]
-  apiece run [dev] [-d DIR -p PORT -i INSTANCE --forward-ssh-agent --dockeropt=OPT...] [--] [<args>...]
+  apiece run [dev] [-d DIR -p PORT -i INSTANCE --forward-ssh-agent --net=NETWORK --dockeropt=OPT...] [--] [<args>...]
   apiece exec local [-d DIR] [--] <command>...
   apiece exec [dev] [-d DIR --forward-ssh-agent --dockeropt=OPT...] [--] <command>...
   apiece clean local [-d DIR]
@@ -45,6 +45,7 @@ pub struct Args {
   pub flag_port: Option<u16>,
   pub flag_instance: Option<String>,
   pub flag_forward_ssh_agent: bool,
+  pub flag_net: Option<String>,
   pub flag_dockeropt: Vec<String>,
 }
 

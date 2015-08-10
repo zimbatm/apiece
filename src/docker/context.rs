@@ -1,17 +1,19 @@
 use std::ffi::OsString;
 use std::path::PathBuf;
 
+use super::Bind;
+
 use regex::Regex;
 
 use context::*;
 
 pub struct Context {
   pub app_env: AppEnvironment,
-  pub external_port: Option<u16>,
   pub instance_name: Option<String>,
   pub ssh_auth_sock: Option<OsString>,
   pub docker_options: Vec<String>,
   pub mount_workdir: bool,
+  pub bind: Bind,
 }
 
 impl AppContext for Context {
@@ -28,7 +30,10 @@ impl HostContext for Context {
 
 impl ContainerContext for Context {
   fn container_bind_port(&self) -> u16 {
-    3000
+    match self.bind {
+      Bind::Bridge(_) => 3000,
+      Bind::Host(port) => port,
+    }
   }
 
   fn mount_workdir(&self) -> bool {
@@ -48,8 +53,8 @@ impl ContainerContext for Context {
 }
 
 impl Context {
-  pub fn external_port(&self) -> Option<u16> {
-    self.external_port
+  pub fn bind(&self) -> &Bind {
+    &self.bind
   }
 
   pub fn ssh_auth_sock(&self) -> Option<&OsString> {

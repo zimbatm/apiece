@@ -34,13 +34,17 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
     command.arg("-e").arg(format!("{}={}", k, v));
   }
 
-  match context.external_port() {
-    Some(port) => {
+  match context.bind() {
+    &docker::Bind::Bridge(Some(port)) => {
       command
         .arg("-p")
         .arg(format!("{}:{}", port, context.container_bind_port()));
     }
-    None => {}
+    &docker::Bind::Host(_) => {
+      command
+        .arg("--net=host");
+    }
+    _ => {}
   }
 
   if context.mount_workdir() {

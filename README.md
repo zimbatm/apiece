@@ -130,12 +130,15 @@ Builds the application in given environment.
 
 ```
 run local [-d DIR -p <port>] [--] <args>...
-run [dev] [-d DIR -p <port> --forward-ssh-agent --dockeropt=OPT...] [--] <args>...
+run [dev] [-d DIR -p <port> --forward-ssh-agent --net=NETWORK --dockeropt=OPT...] [--] <args>...
 ```
 
 Runs the application in given environment using the last build. Supports
 exposing the application port and SSH agent sock forwarding for containerized
 environments.
+
+By default, Docker networking runs in the bridge mode. It is possible to switch
+to the host mode by passing `--net=host` and the port number.
 
 ### exec
 
