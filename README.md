@@ -6,6 +6,9 @@ Uses base images for bootstrapping applications, which include scripts for
 building and running the created application in consistent, isolated
 [environments](#environments).
 
+Disclaimer: it's still a beta-quality software, there are some rough edges, such
+as error handling and logging.
+
 ## Requirements
 
 * Docker 1.6.0+
