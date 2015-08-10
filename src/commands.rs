@@ -10,6 +10,7 @@ pub fn in_host_context<S: AsRef<OsStr>>(context: &HostContext, program: S, args:
   for (k, v) in context.host_env() {
     command.env(k, v);
   }
+  command.env("APIECEIO_BIND", "127.0.0.1");
   command.current_dir(context.host_dir());
   command
 }
