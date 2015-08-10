@@ -2,9 +2,14 @@ mod build;
 mod context;
 mod commands;
 
-pub enum Bind {
-  Host(u16),
-  Bridge(Option<u16>),
+pub struct Bind {
+  pub address: String,
+  pub port: u16,
+}
+
+pub enum Network {
+  Host(Bind),
+  Bridge(Option<Bind>),
 }
 
 pub use self::context::Context;

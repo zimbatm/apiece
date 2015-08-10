@@ -10,7 +10,6 @@ pub fn in_host_context<S: AsRef<OsStr>>(context: &HostContext, program: S, args:
   for (k, v) in context.host_env() {
     command.env(k, v);
   }
-  command.env("APIECEIO_BIND", "127.0.0.1");
   command.current_dir(context.host_dir());
   command
 }
@@ -35,19 +34,19 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
     command.arg("-e").arg(format!("{}={}", k, v));
   }
 
-  match context.bind() {
-    &docker::Bind::Bridge(Some(port)) => {
+  match context.network() {
+    &docker::Network::Bridge(Some(ref bind)) => {
       command
         .arg("-p")
-        .arg(format!("127.0.0.1:{}:{}", port, context.container_bind_port()))
+        .arg(format!("{}:{}:{}", bind.address, bind.port, context.container_bind_port()))
         .arg("-e")
         .arg(format!("APIECEIO_BIND={}", "0.0.0.0"));
     }
-    &docker::Bind::Host(_) => {
+    &docker::Network::Host(ref bind) => {
       command
         .arg("--net=host")
         .arg("-e")
-        .arg(format!("APIECEIO_BIND={}", "127.0.0.1"));
+        .arg(format!("APIECEIO_BIND={}", bind.address));
     }
     _ => {}
   }

@@ -1,7 +1,7 @@
 use std::ffi::OsString;
 use std::path::PathBuf;
 
-use super::Bind;
+use super::Network;
 
 use regex::Regex;
 
@@ -13,7 +13,7 @@ pub struct Context {
   pub ssh_auth_sock: Option<OsString>,
   pub docker_options: Vec<String>,
   pub mount_workdir: bool,
-  pub bind: Bind,
+  pub network: Network,
 }
 
 impl AppContext for Context {
@@ -30,9 +30,9 @@ impl HostContext for Context {
 
 impl ContainerContext for Context {
   fn container_bind_port(&self) -> u16 {
-    match self.bind {
-      Bind::Bridge(_) => 3000,
-      Bind::Host(port) => port,
+    match self.network {
+      Network::Bridge(_) => 3000,
+      Network::Host(ref bind) => bind.port,
     }
   }
 
@@ -53,8 +53,8 @@ impl ContainerContext for Context {
 }
 
 impl Context {
-  pub fn bind(&self) -> &Bind {
-    &self.bind
+  pub fn network(&self) -> &Network {
+    &self.network
   }
 
   pub fn ssh_auth_sock(&self) -> Option<&OsString> {

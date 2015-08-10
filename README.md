@@ -129,8 +129,8 @@ Builds the application in given environment.
 ### run
 
 ```
-run local [-d DIR -p <port>] [--] <args>...
-run [dev] [-d DIR -p <port> --forward-ssh-agent --net=NETWORK --dockeropt=OPT...] [--] <args>...
+run local [-d DIR -b <bind> -p <port>] [--] <args>...
+run [dev] [-d DIR -b <bind> -p <port> --forward-ssh-agent --net=NETWORK --dockeropt=OPT...] [--] <args>...
 ```
 
 Runs the application in given environment using the last build. Supports
@@ -139,6 +139,9 @@ environments.
 
 By default, Docker networking runs in the bridge mode. It is possible to switch
 to the host mode by passing `--net=host` and the port number.
+
+Bind address can be specified using `-b` or `--bind`. By default applications
+are bound to `127.0.0.1`.
 
 ### exec
 

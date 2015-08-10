@@ -33,10 +33,13 @@ fn main() {
     let app_name = read_app_name(&workdir).unwrap();
     let app = context::App::new(app_name, workdir, HashMap::new());
 
+    let bind = args.flag_bind.unwrap_or("127.0.0.1".to_string());
+
     if args.cmd_local || args.cmd_info {
       let context = local::Context {
         app_env: context::AppEnvironment::new("local", app),
-        bind_port: args.flag_port.unwrap_or(3000),
+        bind: bind,
+        port: args.flag_port.unwrap_or(3000),
       };
       if args.cmd_build {
         local::build(&context).unwrap();
@@ -52,11 +55,14 @@ fn main() {
         }
       }
     } else {
-      let bind = match args.flag_net {
+      let network = match args.flag_net {
         Some(net_type) => {
           if net_type == "host" {
             match args.flag_port {
-              Some(port) => docker::Bind::Host(port),
+              Some(port) =>
+                docker::Network::Host(
+                  docker::Bind { address: bind, port: port }
+                ),
               None => panic!("Host network requires a port number"),
             }
           } else {
@@ -64,7 +70,9 @@ fn main() {
           }
         },
         None => {
-          docker::Bind::Bridge(args.flag_port)
+          docker::Network::Bridge(args.flag_port.map(|p| {
+            docker::Bind { address: bind, port: p }
+          }))
         }
       };
 
@@ -82,7 +90,7 @@ fn main() {
         },
         docker_options: args.flag_dockeropt,
         mount_workdir: args.cmd_dev,
-        bind: bind,
+        network: network,
       };
       if args.cmd_build {
         docker::build(&context).unwrap();

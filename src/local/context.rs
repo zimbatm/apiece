@@ -5,7 +5,8 @@ use context::*;
 
 pub struct Context {
   pub app_env: AppEnvironment,
-  pub bind_port: u16,
+  pub bind: String,
+  pub port: u16,
 }
 
 impl AppContext for Context {
@@ -17,7 +18,8 @@ impl AppContext for Context {
 impl HostContext for Context {
   fn host_env(&self) -> EnvVars {
     let mut env_vars = self.app_env.env_vars();
-    env_vars.insert("APIECEIO_PORT".to_string(), self.bind_port.to_string());
+    env_vars.insert("APIECEIO_BIND".to_string(), self.bind.to_string());
+    env_vars.insert("APIECEIO_PORT".to_string(), self.port.to_string());
     env_vars.insert("APIECEIO_DATA_DIR".to_string(), self.host_data_dir().into_string().unwrap());
     env_vars
   }
