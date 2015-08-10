@@ -38,11 +38,15 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
     &docker::Bind::Bridge(Some(port)) => {
       command
         .arg("-p")
-        .arg(format!("{}:{}", port, context.container_bind_port()));
+        .arg(format!("127.0.0.1:{}:{}", port, context.container_bind_port()))
+        .arg("-e")
+        .arg(format!("APIECEIO_BIND={}", "0.0.0.0"));
     }
     &docker::Bind::Host(_) => {
       command
-        .arg("--net=host");
+        .arg("--net=host")
+        .arg("-e")
+        .arg(format!("APIECEIO_BIND={}", "127.0.0.1"));
     }
     _ => {}
   }
@@ -63,7 +67,7 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
         .arg("-v")
         .arg(format!("{}:{}", host_sock, guest_sock))
         .arg("-e")
-        .arg(format!("{}={}", "SSH_AUTH_SOCK", guest_sock));
+        .arg(format!("SSH_AUTH_SOCK={}", guest_sock));
     }
     None => {}
   }
