@@ -86,8 +86,8 @@ impl Context {
   pub fn docker_image(&self) -> String {
     let re = Regex::new(r"[^a-z0-9_]").unwrap();
     format!(
-      "{}__{}",
-      re.replace_all(&self.app_name().replace("/", "__"), "_"),
+      "{}_{}",
+      re.replace_all(&self.app_name().replace("/", "_"), "_"),
       self.app_env.name()
     )
   }

@@ -31,7 +31,7 @@ fn make_tmp_docker_file(context: &Context) -> Result<OsString> {
 }
 
 fn build_stage1(context: &Context, tmp_docker_file: &OsStr) -> Result<String> {
-  let tag_stage1 = format!("{}__stage1", context.docker_image());
+  let tag_stage1 = format!("{}_stage1", context.docker_image());
   commands::in_host_context(context, "docker", &vec!["build"])
     .arg("-f").arg(tmp_docker_file)
     .arg("-t").arg(&tag_stage1)

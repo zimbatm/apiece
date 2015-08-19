@@ -24,8 +24,8 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
   command
     .arg("-w")
     .arg(context.container_dir())
-    .arg("-t")
-    .arg("-i");
+    .arg("-i")
+    .arg("--sig-proxy=true");
   if temp {
     command.arg("--rm");
   }
@@ -73,7 +73,7 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
   }
 
   let container_name = match context.instance_name() {
-    Some(name) => format!("{}__{}", context.container_name(), name),
+    Some(name) => format!("{}_{}", context.container_name(), name),
     None => context.container_name()
   };
 
