@@ -21,6 +21,8 @@ use std::fs::File;
 use std::io::{Read, Error};
 use std::path::PathBuf;
 
+use regex::Regex;
+
 use context::AppContext;
 
 fn main() {
@@ -120,6 +122,6 @@ fn read_app_name(workdir: &OsStr) -> Result<String, Error> {
   );
   let mut buf = String::new();
   file.read_to_string(&mut buf).map(|_| {
-    buf
+    Regex::new(r"\s*$").unwrap().replace_all(&buf, "")
   })
 }
