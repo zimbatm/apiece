@@ -78,13 +78,18 @@ fn main() {
         }
       };
 
+      let instance = if args.cmd_run {
+        Some(args.flag_instance.unwrap_or("main".to_string()))
+      } else {
+        args.flag_instance
+      };
       let context = docker::Context {
         app_env: if args.cmd_dev {
           context::AppEnvironment::new("development", app)
         } else {
           context::AppEnvironment::new("production", app)
         },
-        instance_name: args.flag_instance,
+        instance_name: instance,
         ssh_auth_sock: if args.flag_forward_ssh_agent {
           env::var("SSH_AUTH_SOCK").ok().map(|s| { OsString::from(s) })
         } else {
