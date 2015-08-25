@@ -51,13 +51,21 @@ pub fn in_docker_context<S: AsRef<OsStr>>(context: &docker::Context, image: &str
     _ => {}
   }
 
-  if context.mount_workdir() {
-    let host_dir = context.host_dir().to_os_string().into_string().unwrap();
-    let container_dir = context.container_dir().to_os_string().into_string().unwrap();
-    command
-      .arg("-v")
-      .arg(format!("{}:{}", host_dir, container_dir));
-  }
+  let host_dir = if context.mount_workdir() {
+    context.host_dir().to_os_string()
+  } else {
+    context.host_data_dir()
+  }.into_string().unwrap();
+
+  let container_dir = if context.mount_workdir() {
+    context.container_dir().to_os_string()
+  } else {
+    context.container_data_dir()
+  }.into_string().unwrap();
+
+  command
+    .arg("-v")
+    .arg(format!("{}:{}", host_dir, container_dir));
 
   match context.ssh_auth_sock() {
     Some(sock) => {
